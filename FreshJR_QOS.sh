@@ -2043,14 +2043,14 @@ case "$arg1" in
 			iptable_down_rules 2>&1 | logger -t "adaptive QOS"
 			iptable_up_rules 2>&1 | logger -t "adaptive QOS"
 			
-			logger -t "adaptive QOS" -s -- "TC Modification Delayed Start (2min)"
-			sleep 120s
+			logger -t "adaptive QOS" -s -- "TC Modification Delayed Start (1min)"
+			sleep 60s
 		fi
 
 
 		if [ "$arg1" == "mount" ] ; then			
-			logger -t "adaptive QOS" -s -- "--Post USB Mount-- Delayed Start (2min)"
-			sleep 120s
+			logger -t "adaptive QOS" -s -- "--Post USB Mount-- Delayed Start (1min)"
+			sleep 60s
 
 		fi
 		
@@ -2184,7 +2184,7 @@ case "$arg1" in
 	else																			   #if firewall-start does not exist then set it up entirely
 	   echo "Firewall-start not detected, creating firewall-start"
 	   echo "Placing FreshJR_QOS entry into firewall-start"
-	   echo "#!/bin/sh" > /jffs/scripts/firewall-starA5xm	^      �  �   ]             ��  ~t
+	   echo "#!/bin/sh" > /jffs/scripts/firewall-starA5xm	^��]��~t
 	   echo '/jffs/scripts/FreshJR_QOS -start $1 & ' >> /jffs/scripts/firewall-start
 	   chmod 0755 /jffs/scripts/firewall-start
 	fi
