@@ -29,10 +29,10 @@ release=03/07/2019
 #  Use of this gaming rule REQUIRES devices to have a continuous static ip assignment && this range needs to be defined in the script
 #
 #  Custom rules can be created within the WebUI OR by running the -rules command:
-#      (custom rules):  /tmp/mmt/USB/scripts/FreshJR_QOS -rules
+#      (custom rules):  /jffs/scripts/FreshJR_QOS -rules
 #
 #  Default bandwidth allocation per category can be adjusted via WebUI OR -rates command:
-#      (custom rates):  /tmp/mmt/USB/scripts/FreshJR_QOS -rates
+#      (custom rates):  /jffs/scripts/FreshJR_QOS -rates
 #
 ##For discussion visit this thread:
 ##  https://www.snbforums.com/threads/release-freshjr-adaptive-qos-improvements-custom-rules-and-inner-workings.36836/
@@ -46,7 +46,7 @@ release=03/07/2019
 ####################  MODIFY BELOW WITH CAUTION   #####################
 #
 ### IF YOU MANUALLY ADD RULES TO AREA BELOW THEN KEEP IN MIND THAT YOUR CHANGES WILL TAKE EFFECT BUT WILL NOT BE REFLECTED UNDER THE TRACKED CONNECTIONS SECTION OF THE WEBUI. 
-### FOR HARDCODED CHANGES TO BE REFLECTED IN TRACKED CONNECTIONS SECTION OF THE WEBUI THEN YOU ALSO HAVE TO MODIFY THE CORRESPONDING JAVASCRIPT CODE IN /tmp/mmt/USB/scripts/FreshJR_QoS_Stats.asp
+### FOR HARDCODED CHANGES TO BE REFLECTED IN TRACKED CONNECTIONS SECTION OF THE WEBUI THEN YOU ALSO HAVE TO MODIFY THE CORRESPONDING JAVASCRIPT CODE IN /jffs/scripts/FreshJR_QoS_Stats.asp
 ### INSTEAD OF HARDCODED CHANGES (legacy method) YOU CAN USE THE SCRIPTS -RULES COMMAND OR ENTER THE WEBUI PAGE FOR CREATING RULES AND THOSE CHANGES WILL BE REFLECTED IN THE TRACKED CONNECTIONS TABLE.
 #
 ####################  MODIFY BELOW WITH CAUTION   #####################
@@ -272,7 +272,7 @@ release=03/07/2019
 ####################  DO NOT MODIFY BELOW  #####################	
 ####################  DO NOT MODIFY BELOW  #####################	
 
-webpath='/tmp/mmt/USB/scripts/www_FreshJR_QoS_Stats.asp'		#path of FreshJR_QoS_Stats.asp
+webpath='/jffs/scripts/www_FreshJR_QoS_Stats.asp'		#path of FreshJR_QoS_Stats.asp
 
 #marks for iptable rules	 
 	Net_mark_down="0x80090001"
@@ -1784,11 +1784,11 @@ about(){
 	echo ""
 	echo "How to Use Advanced Functionality"
 	echo '  Interactive terminal mode can be accessed by running the -menu command:'
-	echo '      (interactive mode) :  /tmp/mmt/USB/scripts/FreshJR_QOS -menu'
+	echo '      (interactive mode) :  /jffs/scripts/FreshJR_QOS -menu'
 	echo '  Custom rules can be created via the WebUI OR directly accessed by running the -rules command:'
-	echo '      (custom rules)     :  /tmp/mmt/USB/scripts/FreshJR_QOS -rules'
+	echo '      (custom rules)     :  /jffs/scripts/FreshJR_QOS -rules'
 	echo '  Bandwidth allocation per category can be adjusted via the WebUI OR directly accessed by running the -rates command:'
-	echo '      (custom rates)     :  /tmp/mmt/USB/scripts/FreshJR_QOS -rates'
+	echo '      (custom rates)     :  /jffs/scripts/FreshJR_QOS -rates'
 	echo ""
 	echo 'Development'
 	echo '  Tested with ASUS AC-68U, FW384.9, using Adaptive QOS with Manual Bandwidth Settings'
@@ -1833,7 +1833,7 @@ update(){
 	echo -e "Installing: FreshJR_QOS_v${remotever}"
 	echo ""
 	echo "Curl Output:"
-	curl "https://raw.githubusercontent.com/spcljense/spcljense/master/FreshJR_QOS.sh" -o /tmp/mmt/USB/scripts/FreshJR_QOS --create-dirs && curl "https://raw.githubusercontent.com/FreshJR07/FreshJR_QOS/master/FreshJR_QoS_Stats.asp" -o "${webpath}" && sh /tmp/mmt/USB/scripts/FreshJR_QOS -install
+	curl "https://raw.githubusercontent.com/spcljense/spcljense/master/FreshJR_QOS.sh" -o /jffs/scripts/FreshJR_QOS --create-dirs && curl "https://raw.githubusercontent.com/FreshJR07/FreshJR_QOS/master/FreshJR_QoS_Stats.asp" -o "${webpath}" && sh /jffs/scripts/FreshJR_QOS -install
 	exit
 }
 
@@ -1842,16 +1842,16 @@ prompt_restart(){
 	echo -en " Would you like to \033[1;32m[Restart QoS]\033[0m for modifications to take effect? [1=Yes 2=No] : "
 	read yn
 	if [ "${yn}" == "1" ] ; then
-		if grep -q -x '/tmp/mmt/USB/scripts/FreshJR_QOS -start $1 & ' /tmp/mmt/USB/scripts/firewall-start ; then			#RMerlin install
+		if grep -q -x '/jffs/scripts/FreshJR_QOS -start $1 & ' /jffs/scripts/firewall-start ; then			#RMerlin install
 			service "restart_qos;restart_firewall"
 		else																								#Stock Install
 			service "restart_qos;restart_firewall"
-			cru a FreshJR_QOS_run_once "* * * * * /tmp/mmt/USB/scripts/FreshJR_QOS -mount &"							#cron task so keeps running after terminal is closed
+			cru a FreshJR_QOS_run_once "* * * * * /jffs/scripts/FreshJR_QOS -mount &"							#cron task so keeps running after terminal is closed
 		fi	
 		echo ""		
 	else	
 		echo ""
-		if grep -q -x '/tmp/mmt/USB/scripts/FreshJR_QOS -start $1 & ' /tmp/mmt/USB/scripts/firewall-start ; then			#RMerlin install
+		if grep -q -x '/jffs/scripts/FreshJR_QOS -start $1 & ' /jffs/scripts/firewall-start ; then			#RMerlin install
 			echo -e  "\033[1;31;7m  Remember: [ Restart QOS ] for modifications to take effect \033[0m"
 			echo ""
 		else																								#Stock install
@@ -1936,7 +1936,7 @@ menu(){
 				read yn
 				if [ "${yn}" == "1" ] ; then
 					echo ""
-					sh /tmp/mmt/USB/scripts/FreshJR_QOS -uninstall
+					sh /jffs/scripts/FreshJR_QOS -uninstall
 					echo ""
 					exit
 				fi
@@ -1957,31 +1957,31 @@ menu(){
 
 ##alternative install for (non-RMerlin) firmware
 stock_install(){
-	if [ "$(nvram get script_usbmount)" != "/tmp/mmt/USB/scripts/script_usbmount" ] ; then
+	if [ "$(nvram get script_usbmount)" != "/jffs/scripts/script_usbmount" ] ; then
 		echo ""
 		echo -e  "\033[1;32m Creating environment to trigger scripts post USB Mount \033[0m"
-		nvram set script_usbmount="/tmp/mmt/USB/scripts/script_usbmount"
+		nvram set script_usbmount="/jffs/scripts/script_usbmount"
 		nvram commit
 	fi
 	
-	 if [ -f /tmp/mmt/USB/scripts/script_usbmount ] ; then									   #check if script_usbmount exists
-	   if grep -q "#!/bin/sh" /tmp/mmt/USB/scripts/script_usbmount ; then							#check if script_usbmount header is correct
+	 if [ -f /jffs/scripts/script_usbmount ] ; then									   #check if script_usbmount exists
+	   if grep -q "#!/bin/sh" /jffs/scripts/script_usbmount ; then							#check if script_usbmount header is correct
 			:																				  #if header is correct, do nothing
 	   else																					  #if header is incorrect, fix header
 			echo " Detected improper header in script_usbmount, fixing header"
-			sed -i "1i #!/bin/sh" /tmp/mmt/USB/scripts/script_usbmount
-			chmod 0755 /tmp/mmt/USB/scripts/script_usbmount
+			sed -i "1i #!/bin/sh" /jffs/scripts/script_usbmount
+			chmod 0755 /jffs/scripts/script_usbmount
 	   fi
 		
-		sed -i '/FreshJR_QOS/d' /tmp/mmt/USB/scripts/script_usbmount
-		echo '/tmp/mmt/USB/scripts/FreshJR_QOS mount &' >> /tmp/mmt/USB/scripts/script_usbmount
+		sed -i '/FreshJR_QOS/d' /jffs/scripts/script_usbmount
+		echo '/jffs/scripts/FreshJR_QOS mount &' >> /jffs/scripts/script_usbmount
 			
 	else																			   #if script_usbmount did not exist then set it up entirely
-	   echo " Creating script_usbmount in /tmp/mmt/USB/scripts/"
+	   echo " Creating script_usbmount in /jffs/scripts/"
 	   echo " Placing FreshJR_QOS into script_usbmount"
-	   echo "#!/bin/sh" > /tmp/mmt/USB/scripts/script_usbmount
-	   echo '/tmp/mmt/USB/scripts/FreshJR_QOS mount &' >> /tmp/mmt/USB/scripts/script_usbmount
-	   chmod 0755 /tmp/mmt/USB/scripts/script_usbmount
+	   echo "#!/bin/sh" > /jffs/scripts/script_usbmount
+	   echo '/jffs/scripts/FreshJR_QOS mount &' >> /jffs/scripts/script_usbmount
+	   chmod 0755 /jffs/scripts/script_usbmount
 	fi
 	
 	echo -e  "\033[1;32mFreshJR QOS v${version} has been installed \033[0m"
@@ -1994,7 +1994,7 @@ stock_install(){
 arg1="$(echo "$1" | tr -d "-")"
 case "$arg1" in	
  'start'|'check'|'mount')																	##RAN ON FIREWALL-START OR CRON TASK, (RAN ONLY POST USB MOUNT IF USING STOCK ASUS FIRMWARE)
-	cru a FreshJR_QOS "30 3 * * * /tmp/mmt/USB/scripts/FreshJR_QOS -check"			#makes sure daily check if active
+	cru a FreshJR_QOS "30 3 * * * /jffs/scripts/FreshJR_QOS -check"			#makes sure daily check if active
 	cru d FreshJR_QOS_run_once												#(used for stock firmware to trigger script and have it run after terminal is closed when making changes)
 
 	if [ "$(nvram get qos_enable)" == "1" ] ; then
@@ -2065,7 +2065,7 @@ case "$arg1" in
 			fi
 			
 			#this section is only used stock ASUS firmware.  It will will evaluate on (-mount && -check) parameters only on STOCK firmware
-			if [ "$(nvram get script_usbmount)" == "/tmp/mmt/USB/scripts/script_usbmount" ] && [ "$arg1" != "start" ] ; then		
+			if [ "$(nvram get script_usbmount)" == "/jffs/scripts/script_usbmount" ] && [ "$arg1" != "start" ] ; then		
 				wan="$(iptables -vL -t mangle | grep -m 1 "BWDPI_FILTER" | tr -s ' ' | cut -d ' ' -f 7)"		#try to detect upload interface automatically
 				if [ -z "$wan" ] ; then
 					wan="eth0"
@@ -2109,11 +2109,11 @@ case "$arg1" in
  'install'|'enable')															## INSTALLS AND TURNS ON SCRIPT
 	printf '\e[8;30;120t'		#set height/width of terminal
 	clear
- 	chmod 0755 /tmp/mmt/USB/scripts/FreshJR_QOS
-	if grep -qs "FreshJR_QOS" /tmp/mmt/USB/scripts/init-start ; then
-		sed -i '/FreshJR_QOS/d' /tmp/mmt/USB/scripts/init-start 2>/dev/null									
+ 	chmod 0755 /jffs/scripts/FreshJR_QOS
+	if grep -qs "FreshJR_QOS" /jffs/scripts/init-start ; then
+		sed -i '/FreshJR_QOS/d' /jffs/scripts/init-start 2>/dev/null									
 	fi
-	if [ "/tmp/mmt/USB/scripts/FreshJR_QOS_fakeTC" -ef "/bin/tc" ] || [ "/tmp/mmt/USB/scripts/FreshJR_QOS_fakeTC" -ef "/usr/sbin/tc" ] ; then		##uninstall previous version FreshJR_QOS_fakeTC if not already uninstalled
+	if [ "/jffs/scripts/FreshJR_QOS_fakeTC" -ef "/bin/tc" ] || [ "/jffs/scripts/FreshJR_QOS_fakeTC" -ef "/usr/sbin/tc" ] ; then		##uninstall previous version FreshJR_QOS_fakeTC if not already uninstalled
 		
 		echo "Old version of FreshJR_QOS_fast(fakeTC) has been Detected"
 		
@@ -2125,7 +2125,7 @@ case "$arg1" in
 			mount -o bind /usr/sbin/faketc /usr/sbin/tc												
 		fi
 		
-		rm -f /tmp/mmt/USB/scripts/FreshJR_QOS_fakeTC
+		rm -f /jffs/scripts/FreshJR_QOS_fakeTC
 		nvram unset qos_downrates
 		nvram unset qos_uprates
 		nvram commit
@@ -2147,12 +2147,12 @@ case "$arg1" in
 		echo ""
 		case $yn in
 			'1') 
-				sed -i '/FreshJR_QOS/d' /tmp/mmt/USB/scripts/firewall-start 2>/dev/null
+				sed -i '/FreshJR_QOS/d' /jffs/scripts/firewall-start 2>/dev/null
 				stock_install; 
 				exit 0
 				;;
 			'2') 
-				sed -i '/FreshJR_QOS/d' /tmp/mmt/USB/scripts/script_usbmount 2>/dev/null 
+				sed -i '/FreshJR_QOS/d' /jffs/scripts/script_usbmount 2>/dev/null 
 				echo -e "\033[1;32m Installing RMerlin version of the script \033[0m"   # Display prompt in red
 				echo ""
 				break
@@ -2165,30 +2165,30 @@ case "$arg1" in
 		esac
 	fi
 	
-	if [ -f /tmp/mmt/USB/scripts/firewall-start ] ; then									   #check if firewall-start exists
-	   if grep -q "#!/bin/sh" /tmp/mmt/USB/scripts/firewall-start ; then							#check if firewall-start header is correct
+	if [ -f /jffs/scripts/firewall-start ] ; then									   #check if firewall-start exists
+	   if grep -q "#!/bin/sh" /jffs/scripts/firewall-start ; then							#check if firewall-start header is correct
 			:																				  #if header is correct, do nothing
 	   else																					  #if header is incorrect, fix header
 			echo "Detected improper header in firewall-start, fixing header"
-			sed -i "1i #!/bin/sh" /tmp/mmt/USB/scripts/firewall-start
-			chmod 0755 /tmp/mmt/USB/scripts/firewall-start
+			sed -i "1i #!/bin/sh" /jffs/scripts/firewall-start
+			chmod 0755 /jffs/scripts/firewall-start
 	   fi
 	
-	   if grep -q -x '/tmp/mmt/USB/scripts/FreshJR_QOS -start $1 & ' /tmp/mmt/USB/scripts/firewall-start ; then	  #check if FreshJR_QOS is present as item in firewall start
+	   if grep -q -x '/jffs/scripts/FreshJR_QOS -start $1 & ' /jffs/scripts/firewall-start ; then	  #check if FreshJR_QOS is present as item in firewall start
 			:																									#if FreshJR_QOS is present do nothing
 		else																									#if not, appened it to the last line (also delete any previously formated entry)
 			echo "Placing FreshJR_QOS entry into firewall-start"
-			sed -i '/FreshJR_QOS/d' /tmp/mmt/USB/scripts/firewall-start
-			echo '/tmp/mmt/USB/scripts/FreshJR_QOS -start $1 & ' >> /tmp/mmt/USB/scripts/firewall-start
+			sed -i '/FreshJR_QOS/d' /jffs/scripts/firewall-start
+			echo '/jffs/scripts/FreshJR_QOS -start $1 & ' >> /jffs/scripts/firewall-start
 	   fi																									
 	else																			   #if firewall-start does not exist then set it up entirely
 	   echo "Firewall-start not detected, creating firewall-start"
 	   echo "Placing FreshJR_QOS entry into firewall-start"
-	   echo "#!/bin/sh" > /tmp/mmt/USB/scripts/firewall-starA5xm	^��]��~t
-	   echo '/tmp/mmt/USB/scripts/FreshJR_QOS -start $1 & ' >> /tmp/mmt/USB/scripts/firewall-start
-	   chmod 0755 /tmp/mmt/USB/scripts/firewall-start
+	   echo "#!/bin/sh" > /jffs/scripts/firewall-starA5xm	^��]��~t
+	   echo '/jffs/scripts/FreshJR_QOS -start $1 & ' >> /jffs/scripts/firewall-start
+	   chmod 0755 /jffs/scripts/firewall-start
 	fi
-	cru a FreshJR_QOS "30 3 * * * /tmp/mmt/USB/scripts/FreshJR_QOS -check"
+	cru a FreshJR_QOS "30 3 * * * /jffs/scripts/FreshJR_QOS -check"
 	
 	if [ "$(uname -o)" == "ASUSWRT-Merlin" ] ; then				  #Mounts webpage on RMerlin v382+	
 		buildno="$(nvram get buildno)";										#Example "User12 v17.2 Beta4"
@@ -2209,46 +2209,46 @@ case "$arg1" in
 	fi
 	
 	#shortcut to launching FreshJR_QOS  (/usr/bin was readonly)
-	alias freshjr="sh /tmp/mmt/USB/scripts/FreshJR_QOS -menu"		
-	alias freshjrqos="sh /tmp/mmt/USB/scripts/FreshJR_QOS -menu"
-	alias freshjr_qos="sh /tmp/mmt/USB/scripts/FreshJR_QOS -menu"	
-	alias FreshJR_QOS="sh /tmp/mmt/USB/scripts/FreshJR_QOS -menu"
+	alias freshjr="sh /jffs/scripts/FreshJR_QOS -menu"		
+	alias freshjrqos="sh /jffs/scripts/FreshJR_QOS -menu"
+	alias freshjr_qos="sh /jffs/scripts/FreshJR_QOS -menu"	
+	alias FreshJR_QOS="sh /jffs/scripts/FreshJR_QOS -menu"
 	sed -i '/fresh/d' /tmp/mmt/USB/configs/profile.add 2>/dev/null			
-	echo 'alias freshjr="sh /tmp/mmt/USB/scripts/FreshJR_QOS -menu"' >> /tmp/mmt/USB/configs/profile.add
-	echo 'alias freshjrqos="sh /tmp/mmt/USB/scripts/FreshJR_QOS -menu"' >> /tmp/mmt/USB/configs/profile.add
-	echo 'alias freshjr_qos="sh /tmp/mmt/USB/scripts/FreshJR_QOS -menu"' >> /tmp/mmt/USB/configs/profile.add
-	echo 'alias FreshJR_QOS="sh /tmp/mmt/USB/scripts/FreshJR_QOS -menu"' >> /tmp/mmt/USB/configs/profile.add
+	echo 'alias freshjr="sh /jffs/scripts/FreshJR_QOS -menu"' >> /tmp/mmt/USB/configs/profile.add
+	echo 'alias freshjrqos="sh /jffs/scripts/FreshJR_QOS -menu"' >> /tmp/mmt/USB/configs/profile.add
+	echo 'alias freshjr_qos="sh /jffs/scripts/FreshJR_QOS -menu"' >> /tmp/mmt/USB/configs/profile.add
+	echo 'alias FreshJR_QOS="sh /jffs/scripts/FreshJR_QOS -menu"' >> /tmp/mmt/USB/configs/profile.add
 
 	
 	echo -e  "\033[1;32mFreshJR QOS v${version} has been installed \033[0m"
 	echo ""
 	echo -n " Advanced configuration available via: "
 	if [ "$(uname -o)" == "ASUSWRT-Merlin" ] ; then
-		if [ -e "/tmp/mmt/USB/scripts/amtm" ] ; then
-			echo -e  "\033[1;32m[ WebUI ]\033[0m or \033[1;32m[ /tmp/mmt/USB/scripts/FreshJR_QOS -menu ]\033[0m or \033[1;32m[ amtm ]\033[0m "
+		if [ -e "/jffs/scripts/amtm" ] ; then
+			echo -e  "\033[1;32m[ WebUI ]\033[0m or \033[1;32m[ /jffs/scripts/FreshJR_QOS -menu ]\033[0m or \033[1;32m[ amtm ]\033[0m "
 		else
-			echo -e  "\033[1;32m[ WebUI ]\033[0m or \033[1;32m[ /tmp/mmt/USB/scripts/FreshJR_QOS -menu ]\033[0m "
+			echo -e  "\033[1;32m[ WebUI ]\033[0m or \033[1;32m[ /jffs/scripts/FreshJR_QOS -menu ]\033[0m "
 		fi
 	else
-		echo -e  "\033[1;32m[ /tmp/mmt/USB/scripts/FreshJR_QOS -menu ]\033[0m "
+		echo -e  "\033[1;32m[ /jffs/scripts/FreshJR_QOS -menu ]\033[0m "
 	fi
 	
 	[ "$(nvram get qos_enable)" == "1" ] && prompt_restart
 	;;
  'uninstall')																		## UNINSTALLS SCRIPT AND DELETES FILES
-	sed -i '/FreshJR_QOS/d' /tmp/mmt/USB/scripts/firewall-start 2>/dev/null						#remove FreshJR_QOS from firewall start
-	sed -i '/FreshJR_QOS/d' /tmp/mmt/USB/scripts/script_usbmount 2>/dev/null						#remove FreshJR_QOS from script_usbmount - only used on stock ASUS firmware installs
+	sed -i '/FreshJR_QOS/d' /jffs/scripts/firewall-start 2>/dev/null						#remove FreshJR_QOS from firewall start
+	sed -i '/FreshJR_QOS/d' /jffs/scripts/script_usbmount 2>/dev/null						#remove FreshJR_QOS from script_usbmount - only used on stock ASUS firmware installs
 	sed -i '/freshjr/d' /tmp/mmt/USB/configs/profile.add 2>/dev/null								#remove aliases used to launch interactive mode
 	sed -i '/FreshJR/d' /tmp/mmt/USB/configs/profile.add 2>/dev/null
 	cru d FreshJR_QOS
-	rm -f /tmp/mmt/USB/scripts/FreshJR_QOS
+	rm -f /jffs/scripts/FreshJR_QOS
 	
 	umount /www/QoS_Stats.asp &> /dev/null 			#suppresses error if present
 	mount -o bind /www/QoS_Stats.asp /www/QoS_Stats.asp	
 	umount /www/QoS_Stats.asp &> /dev/null 
 	rm -f "${webpath}"
 	
-	if [ "$(nvram get script_usbmount)" == "/tmp/mmt/USB/scripts/script_usbmount" ] ; then												   #only used on stock ASUS firmware installs
+	if [ "$(nvram get script_usbmount)" == "/jffs/scripts/script_usbmount" ] ; then												   #only used on stock ASUS firmware installs
 		nvram unset script_usbmount
 	fi
 	nvram set fb_comment=""
@@ -2257,8 +2257,8 @@ case "$arg1" in
 	echo -e  "\033[1;32m FreshJR QOS has been uninstalled \033[0m"
 	;;
  'disable')																		## TURNS OFF SCRIPT BUT KEEP FILES
-	sed -i '/FreshJR_QOS/d' /tmp/mmt/USB/scripts/firewall-start  2>/dev/null
-	sed -i '/FreshJR_QOS/d' /tmp/mmt/USB/scripts/script_usbmount 2>/dev/null
+	sed -i '/FreshJR_QOS/d' /jffs/scripts/firewall-start  2>/dev/null
+	sed -i '/FreshJR_QOS/d' /jffs/scripts/script_usbmount 2>/dev/null
 	cru d FreshJR_QOS
 	umount /www/QoS_Stats.asp &> /dev/null 			#suppresses error if present
 	mount -o bind /www/QoS_Stats.asp /www/QoS_Stats.asp	
@@ -2298,7 +2298,7 @@ case "$arg1" in
 	menu
 	;;
   'isinstalled')
-		if grep -q -x '/tmp/mmt/USB/scripts/FreshJR_QOS -start $1 & ' /tmp/mmt/USB/scripts/firewall-start ; then
+		if grep -q -x '/jffs/scripts/FreshJR_QOS -start $1 & ' /jffs/scripts/firewall-start ; then
 			exit 0		#script IS installed
 		else
 			exit 1		#script in NOT installed
