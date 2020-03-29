@@ -2213,11 +2213,11 @@ case "$arg1" in
 	alias freshjrqos="sh /jffs/scripts/FreshJR_QOS -menu"
 	alias freshjr_qos="sh /jffs/scripts/FreshJR_QOS -menu"	
 	alias FreshJR_QOS="sh /jffs/scripts/FreshJR_QOS -menu"
-	sed -i '/fresh/d' /tmp/mmt/USB/configs/profile.add 2>/dev/null			
-	echo 'alias freshjr="sh /jffs/scripts/FreshJR_QOS -menu"' >> /tmp/mmt/USB/configs/profile.add
-	echo 'alias freshjrqos="sh /jffs/scripts/FreshJR_QOS -menu"' >> /tmp/mmt/USB/configs/profile.add
-	echo 'alias freshjr_qos="sh /jffs/scripts/FreshJR_QOS -menu"' >> /tmp/mmt/USB/configs/profile.add
-	echo 'alias FreshJR_QOS="sh /jffs/scripts/FreshJR_QOS -menu"' >> /tmp/mmt/USB/configs/profile.add
+	sed -i '/fresh/d' /jffs/configs/profile.add 2>/dev/null			
+	echo 'alias freshjr="sh /jffs/scripts/FreshJR_QOS -menu"' >> /jffs/configs/profile.add
+	echo 'alias freshjrqos="sh /jffs/scripts/FreshJR_QOS -menu"' >> /jffs/configs/profile.add
+	echo 'alias freshjr_qos="sh /jffs/scripts/FreshJR_QOS -menu"' >> /jffs/configs/profile.add
+	echo 'alias FreshJR_QOS="sh /jffs/scripts/FreshJR_QOS -menu"' >> /jffs/configs/profile.add
 
 	
 	echo -e  "\033[1;32mFreshJR QOS v${version} has been installed \033[0m"
@@ -2238,8 +2238,8 @@ case "$arg1" in
  'uninstall')																		## UNINSTALLS SCRIPT AND DELETES FILES
 	sed -i '/FreshJR_QOS/d' /jffs/scripts/firewall-start 2>/dev/null						#remove FreshJR_QOS from firewall start
 	sed -i '/FreshJR_QOS/d' /jffs/scripts/script_usbmount 2>/dev/null						#remove FreshJR_QOS from script_usbmount - only used on stock ASUS firmware installs
-	sed -i '/freshjr/d' /tmp/mmt/USB/configs/profile.add 2>/dev/null								#remove aliases used to launch interactive mode
-	sed -i '/FreshJR/d' /tmp/mmt/USB/configs/profile.add 2>/dev/null
+	sed -i '/freshjr/d' /jffs/configs/profile.add 2>/dev/null								#remove aliases used to launch interactive mode
+	sed -i '/FreshJR/d' /jffs/configs/profile.add 2>/dev/null
 	cru d FreshJR_QOS
 	rm -f /jffs/scripts/FreshJR_QOS
 	
