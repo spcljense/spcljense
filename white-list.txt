@@ -291,7 +291,6 @@
 @@||docs.live.net^$important
 @@||dogvgb9ujhybx.cloudfront.net^$important
 @@||douban.com^$important
-@@||doubleclick.net^$important
 @@||download.cdn.mozilla.net^$important
 @@||download.dm.origin.com^$important
 @@||download.eac-cdn.com^$important
