@@ -4,6 +4,7 @@
 @@||*.live.com^$important
 @@||*.microsoft.com^$important
 @@||*.microsoftonline.com^$important
+@@||*.msauth.net^$important
 @@||*.msecnd.net^$important
 @@||*.msftauth.net^$important
 @@||*.msn.com^$important
